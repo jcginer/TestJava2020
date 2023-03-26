@@ -11,7 +11,7 @@ paths:
         name: applyDate
         schema:
           type: string
-          format: date
+          format: date-time
         description: Apply date
       - in: query
         name: productId
@@ -33,24 +33,15 @@ paths:
           content:
             application/json:
               schema:
-#                $ref: '#/components/schemas/SimilarProducts'
                 $ref: ''#/responses/PriceResponseBody''
         '404':
           description: Product Not found
         '400':
           description: Bad Request
-#        '500':
-#          $ref: '#/responses/PriceResponseError'
+        '500':
+          description: Internal Server Error
 components:
   schemas:
-#    SimilarProducts:
-#      type: array
-#      description: 'List of similar product Ids to a given one ordered by similarity'
-#      minItems: 0
-#      uniqueItems: true
-#      items:
-#        type: string
-#        example: ["1","2","3"]
     PriceResponseBody:
       description: 'Price detail'
       type: object

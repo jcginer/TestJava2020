@@ -27,15 +27,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @SequenceGenerator(name = Price.PRICE_SEQ, sequenceName = Price.PRICE_SEQ
     , initialValue = 5, allocationSize = 1)
+//TODO: Review this
 //@Check(constraints = "license IN ('A', 'B', 'C', 'D', 'E')")
 public class Price {
-    /*BRAND_ID         START_DATE                                    END_DATE                        PRICE_LIST                   PRODUCT_ID  PRIORITY                 PRICE           CURR
-    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    1         2020-06-14-00.00.00                        2020-12-31-23.59.59                        1                        35455                0                        35.50            EUR
-    1         2020-06-14-15.00.00                        2020-06-14-18.30.00                        2                        35455                1                        25.45            EUR
-    1         2020-06-15-00.00.00                        2020-06-15-11.00.00                        3                        35455                1                        30.50            EUR
-    1         2020-06-15-16.00.00                        2020-12-31-23.59.59                        4                        35455                1                        38.95            EUR*/
-
     private static final long serialVersionUID = 1L;
     static final String PRICE_SEQ = "PRICE_SEQ";
 

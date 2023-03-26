@@ -15,12 +15,9 @@ spring:
       path: /h2
   jpa:
     hibernate:
-#      ddl-auto: update
       ddl-auto: create-drop
     defer-datasource-initialization: true
   mvc:
-    format:
-      date-time: iso
     pathmatch:
       matching-strategy: ant_path_matcher
   sql:
@@ -32,6 +29,4 @@ priceApis:
     url: http://localhost:${server.port}/price/{applyDate}&{productId}&{brandId}
 
 price:
-  url: http://localhost:${server.port}
-  urls:
-    byApplyDate: /price/{applyDate}&{productId}&{brandId}
+  url: http://localhost:${server.port}/price
