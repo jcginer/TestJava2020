@@ -37,6 +37,8 @@ paths:
                 $ref: ''#/responses/PriceResponseBody''
         '404':
           description: Product Not found
+        '400':
+          description: Bad Request
 #        '500':
 #          $ref: '#/responses/PriceResponseError'
 components:

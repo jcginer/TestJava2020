@@ -30,3 +30,8 @@ spring:
 priceApis:
   prices:
     url: http://localhost:${server.port}/price/{applyDate}&{productId}&{brandId}
+
+price:
+  url: http://localhost:${server.port}
+  urls:
+    byApplyDate: /price/{applyDate}&{productId}&{brandId}
