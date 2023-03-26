@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/data/testJava2020.mv.db
+/data/testJava2020.trace.db

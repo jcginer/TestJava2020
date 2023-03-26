@@ -21,8 +21,12 @@ spring:
   mvc:
     format:
       date-time: iso
+    pathmatch:
+      matching-strategy: ant_path_matcher
   sql:
     init:
       mode: always
 
-
+priceApis:
+  prices:
+    url: http://localhost:${server.port}/price/{applyDate}&{productId}&{brandId}

@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: priceApis
+  version: '1.0'
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  '/price/{applyDate}&{productId}&{brandId}':
+    parameters:
+      - in: query
+        name: applyDate
+        schema:
+          type: string
+          format: date
+        description: Apply date
+      - in: query
+        name: productId
+        schema:
+          type: number
+        description: Product identifier
+      - in: query
+        name: brandId
+        schema:
+          type: number
+        description: Brand identifier
+    get:
+      operationId: get-product-in-apply-date
+      summary: Gets the price of a product on the apply date
+      description: Returns the price of a provided product (+ brandId) that has to be applied on the provided apply date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+#                $ref: '#/components/schemas/SimilarProducts'
+                $ref: ''#/responses/PriceResponseBody''
+        '404':
+          description: Product Not found
+#        '500':
+#          $ref: '#/responses/PriceResponseError'
+components:
+  schemas:
+#    SimilarProducts:
+#      type: array
+#      description: 'List of similar product Ids to a given one ordered by similarity'
+#      minItems: 0
+#      uniqueItems: true
+#      items:
+#        type: string
+#        example: ["1","2","3"]
+    PriceResponseBody:
+      description: 'Price detail'
+      type: object
+      properties:
+        productId:
+          type: integer
+          minLength: 1
+        brandId:
+          type: integer
+          minLength: 1
+        price:
+          type: number
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        finalPrice:
+          type: number
+      required:
+        - productId
+        - brandId
+        - price
+        - startDate
+        - endDate
+        - finalPrice
