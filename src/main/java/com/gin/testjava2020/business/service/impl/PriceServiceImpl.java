@@ -29,7 +29,7 @@ public class PriceServiceImpl implements PriceService {
         try {
             prices = priceRepository.findByApplyDate(applyDate, productId, brandId);
         } catch(Exception e) {
-            throw new ProductNotFoundException("Product Not found for the required date-time");
+            throw new ProductNotFoundException("Error during database access", e);
         }
 
         final Price price = prices.stream().sorted(Comparator.comparing(Price::getPriority, Comparator.reverseOrder())).findFirst().orElse(null);
@@ -38,8 +38,6 @@ public class PriceServiceImpl implements PriceService {
             throw new ProductNotFoundException("Product Not found for the required date-time");
         }
 
-        PriceResponseBody priceResponseBody = priceMapper.map(price);
-
-        return priceResponseBody;
+        return priceMapper.map(price);
     }
 }

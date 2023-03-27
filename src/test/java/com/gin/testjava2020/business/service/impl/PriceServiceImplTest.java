@@ -30,6 +30,7 @@ class PriceServiceImplTest {
     private static final Long PRODUCT_ID = 1L;
     private static final Long BRAND_ID = 1L;
     private static final String PRODUCT_NOT_FOUND = "Product Not found for the required date-time";
+    private static final String DB_ERROR = "Error during database access";
     public static final double PRICE_1 = 28.10;
 
     @InjectMocks
@@ -73,13 +74,25 @@ class PriceServiceImplTest {
     }
 
     @Test
-    void getPriceByApplyDateExceptionTest() throws ProductNotFoundException {
+    void getPriceByApplyDateExceptionTest() {
         when(priceRepository.findByApplyDate(APPLY_DATE,  PRODUCT_ID, BRAND_ID)).thenReturn(Collections.EMPTY_LIST);
 
         ProductNotFoundException pluginApiException = Assertions.assertThrows(ProductNotFoundException.class,
             ()-> sut.getPriceByApplyDate(APPLY_DATE, PRODUCT_ID, BRAND_ID));
 
         Assertions.assertEquals(PRODUCT_NOT_FOUND, pluginApiException.getMessage());
+    }
+
+    @Test
+    void getPriceByApplyDateException2Test() {
+        RuntimeException runtimeException = new RuntimeException();
+        when(priceRepository.findByApplyDate(APPLY_DATE,  PRODUCT_ID, BRAND_ID)).thenThrow(runtimeException);
+
+        ProductNotFoundException pluginApiException = Assertions.assertThrows(ProductNotFoundException.class,
+            ()-> sut.getPriceByApplyDate(APPLY_DATE, PRODUCT_ID, BRAND_ID));
+
+        Assertions.assertEquals(DB_ERROR, pluginApiException.getMessage());
+        Assertions.assertEquals(runtimeException, pluginApiException.getCause());
     }
 
     private Price createPrice(final LocalDateTime localDateTime, final long days, final long productId, final long brandId, final double price, final int priority) {
