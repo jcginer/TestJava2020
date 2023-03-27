@@ -123,7 +123,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${basedir}/priceApis.yaml</inputSpec>
+                            <inputSpec>${basedir}/src/main/resources/openapi/priceApis.yaml</inputSpec>
                             <language>java</language>
                             <modelPackage>com.gin.testjava2020.model</modelPackage>
                             <configOptions>
@@ -131,8 +131,8 @@
                                 <artifactId>${project.artifactId}</artifactId>
                                 <artifactVersion>${project.version}</artifactVersion>
                                 <library>resttemplate</library>
-                                <java8>true</java8>
-                                <dateLibrary>java8</dateLibrary>
+                                <java11>true</java11>
+                                <dateLibrary>java11</dateLibrary>
                                 <licenseName>Apache 2.0</licenseName>
                                 <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
                             </configOptions>

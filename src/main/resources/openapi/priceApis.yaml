@@ -47,10 +47,10 @@ components:
       type: object
       properties:
         productId:
-          type: integer
+          type: long
           minLength: 1
         brandId:
-          type: integer
+          type: long
           minLength: 1
         price:
           type: number
