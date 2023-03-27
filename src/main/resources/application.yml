@@ -5,7 +5,7 @@ spring:
   application:
     name: testJava2020
   datasource:
-    url: jdbc:h2:file:./data/testJava2020
+    url: jdbc:h2:mem:testJava2020
     username: sa
     password:
     driverClassName: org.h2.Driver
