@@ -19,9 +19,11 @@ public class TestJava2020Configuration {
     /**
      * Gets rest template.
      *
+     *
      * @return the rest template
      */
     @Bean
+    // Required for OpenApi generated sourcecode
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
