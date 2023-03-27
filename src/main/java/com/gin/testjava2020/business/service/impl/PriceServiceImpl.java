@@ -11,10 +11,13 @@ import com.gin.testjava2020.business.mapper.PriceMapper;
 import com.gin.testjava2020.business.service.PriceService;
 import com.gin.testjava2020.exception.ProductNotFoundException;
 import com.gin.testjava2020.model.PriceResponseBody;
-import com.gin.testjava2020.persistence.Price;
+import com.gin.testjava2020.persistence.PriceEntity;
 import com.gin.testjava2020.persistence.repository.PriceRepository;
 import lombok.AllArgsConstructor;
 
+/**
+ * The type Price service.
+ */
 @Service
 @AllArgsConstructor
 public class PriceServiceImpl implements PriceService {
@@ -25,14 +28,14 @@ public class PriceServiceImpl implements PriceService {
     @Override public PriceResponseBody getPriceByApplyDate(final Date applyDate, final Long productId, final Long brandId)
         throws ProductNotFoundException {
 
-        List<Price> prices = null;
+        List<PriceEntity> prices = null;
         try {
             prices = priceRepository.findByApplyDate(applyDate, productId, brandId);
         } catch(Exception e) {
             throw new ProductNotFoundException("Error during database access", e);
         }
 
-        final Price price = prices.stream().sorted(Comparator.comparing(Price::getPriority, Comparator.reverseOrder())).findFirst().orElse(null);
+        final PriceEntity price = prices.stream().sorted(Comparator.comparing(PriceEntity::getPriority, Comparator.reverseOrder())).findFirst().orElse(null);
 
         if(Objects.isNull(price)) {
             throw new ProductNotFoundException("Product Not found for the required date-time");

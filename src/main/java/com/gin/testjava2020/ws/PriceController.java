@@ -21,6 +21,9 @@ import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * The type Price controller.
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/price")
@@ -29,6 +32,15 @@ public class PriceController {
 
     private PriceService priceService;
 
+    /**
+     * Gets price.
+     *
+     * @param applyDate the apply date
+     * @param productId the product id
+     * @param brandId   the brand id
+     * @return the price
+     * @throws ProductNotFoundException the product not found exception
+     */
     @GetMapping(
         headers = {
             HttpHeaders.ACCEPT + "=" + MediaType.APPLICATION_JSON_VALUE

@@ -19,31 +19,33 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The type Price.
+ */
 @Data
 @Entity
 @Table(name= "PRICES")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(name = Price.PRICE_SEQ, sequenceName = Price.PRICE_SEQ
+@SequenceGenerator(name = PriceEntity.PRICE_SEQ, sequenceName = PriceEntity.PRICE_SEQ
     , initialValue = 5, allocationSize = 1)
-//TODO: Review this
-//@Check(constraints = "license IN ('A', 'B', 'C', 'D', 'E')")
-public class Price {
+public class PriceEntity {
     private static final long serialVersionUID = 1L;
+    /**
+     * The Price seq.
+     */
     static final String PRICE_SEQ = "PRICE_SEQ";
 
     @Column(name = "BRAND_ID")
     private Long brandId;
 
     @Column(name = "START_DATE", nullable = false)
-//    @Temporal(TemporalType.DATE)
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern="yyy-MM-dd-HH.mm.ss")
     private Date startDate;
 
     @Column(name = "END_DATE", nullable = false)
-//    @Temporal(TemporalType.DATE)
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern="yyy-MM-dd-HH.mm.ss")
     private Date endDate;
@@ -60,7 +62,7 @@ public class Price {
     private Integer priority;
 
     @Column(name = "PRICE", nullable = false)
-    private Double price;
+    private Double priceAmount;
 
     @Column(name = "CURR", length = 3, nullable = false, columnDefinition = "varchar(3) default 'EUR'")
     private String currency;

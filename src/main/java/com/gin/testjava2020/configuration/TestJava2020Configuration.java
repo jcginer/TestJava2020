@@ -7,12 +7,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * The type Test java 2020 configuration.
+ */
 @Configuration
 @ComponentScan(basePackages = {"com.gin.testjava2020.business.service.*", "com.gin.testjava2020.business.mapper"})
 @EntityScan(basePackages = {"com.gin.testjava2020.persistence"})
 @EnableJpaRepositories(basePackages = {"com.gin.testjava2020.persistence.repository"})
 public class TestJava2020Configuration {
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     @Bean
     public RestTemplate getRestTemplate() {
         return new RestTemplate();

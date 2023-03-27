@@ -6,12 +6,23 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.gin.testjava2020.persistence.Price;
+import com.gin.testjava2020.persistence.PriceEntity;
 
-public interface PriceRepository extends JpaRepository<Price, Long> {
+/**
+ * The interface Price repository.
+ */
+public interface PriceRepository extends JpaRepository<PriceEntity, Long> {
 
-    @Query("FROM Price WHERE productId = :productId AND brandId  = :brandId "
+    /**
+     * Find by apply date list.
+     *
+     * @param applyDate the apply date
+     * @param productId the product id
+     * @param brandId   the brand id
+     * @return the list
+     */
+    @Query("FROM PriceEntity WHERE productId = :productId AND brandId  = :brandId "
         + "AND (startDate <= :applyDate AND :applyDate <= endDate)")
-    List<Price> findByApplyDate(final Date applyDate, final Long productId, final Long brandId);
+    List<PriceEntity> findByApplyDate(final Date applyDate, final Long productId, final Long brandId);
 
 }
