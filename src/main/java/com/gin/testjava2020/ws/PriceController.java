@@ -51,7 +51,7 @@ public class PriceController {
         final PriceResponseBody priceResponseBody;
 
         try {
-            priceResponseBody = priceService.getPriceByApplydate(applyDate, productId, brandId);
+            priceResponseBody = priceService.getPriceByApplyDate(applyDate, productId, brandId);
         } catch (ProductNotFoundException e) {
             log.error(new StringBuilder().append("Product Not found. ProductId: ").append(productId).toString(), e);
             throw e;

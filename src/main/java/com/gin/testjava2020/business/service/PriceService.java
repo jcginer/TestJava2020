@@ -7,6 +7,6 @@ import com.gin.testjava2020.model.PriceResponseBody;
 
 public interface PriceService {
 
-    PriceResponseBody getPriceByApplydate(final Date applyDate, final Long productId, final Long brandId) throws ProductNotFoundException;
+    PriceResponseBody getPriceByApplyDate(final Date applyDate, final Long productId, final Long brandId) throws ProductNotFoundException;
 
 }

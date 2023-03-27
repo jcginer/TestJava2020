@@ -22,7 +22,7 @@ public class PriceServiceImpl implements PriceService {
     private PriceRepository priceRepository;
     private PriceMapper priceMapper;
 
-    @Override public PriceResponseBody getPriceByApplydate(final Date applyDate, final Long productId, final Long brandId)
+    @Override public PriceResponseBody getPriceByApplyDate(final Date applyDate, final Long productId, final Long brandId)
         throws ProductNotFoundException {
 
         List<Price> prices = null;
