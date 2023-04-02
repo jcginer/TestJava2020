@@ -111,8 +111,8 @@ class PriceServiceImplTest {
         expectedPriceResponseBody.productId(price.getProductId());
         expectedPriceResponseBody.brandId(price.getBrandId());
         expectedPriceResponseBody.price(BigDecimal.valueOf(price.getPriceAmount()));
-        expectedPriceResponseBody.startDate(price.getStartDate());
-        expectedPriceResponseBody.endDate(price.getEndDate());
+        expectedPriceResponseBody.startDate(price.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        expectedPriceResponseBody.endDate(price.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         expectedPriceResponseBody.finalPrice(BigDecimal.valueOf(price.getPriceAmount()));
         
         return expectedPriceResponseBody;
