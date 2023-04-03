@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class PriceControllerTI {
+class PriceControllerIT {
 
     public static final String APPLICATION_DATE = "2020-06-14T16:00:00";
     public static final double PRICE_VALUE = 25.45;
