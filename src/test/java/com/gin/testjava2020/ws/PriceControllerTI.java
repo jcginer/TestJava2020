@@ -35,7 +35,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class PriceControllerTI {
+class PriceControllerTI {
+
+    public static final String APPLICATION_DATE = "2020-06-14T16:00:00";
+    public static final double PRICE_VALUE = 25.45;
+    public static final long PRODUCT_ID = 35455L;
+    public static final long BRAND_ID = 1L;
+    public static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String COMPLETE_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    public static final String START_DATE = "2020-06-14T15:00:00";
+    public static final String END_DATE = "2020-06-14T18:30:00";
+    public static final String ERROR_MESSAGE = "Product Not found for the required date-time";
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,17 +65,17 @@ public class PriceControllerTI {
 
     @Test
     void priceTest() throws Exception {
-        PriceResponseBody priceResponseBody = PriceResponseBody.builder().productId(35455L).brandId(1L)
-            .price(BigDecimal.valueOf(25.45)).finalPrice(BigDecimal.valueOf(25.45))
-            .startDate(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse("2020-06-14T15:00:00"))
-            .endDate(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse("2020-06-14T18:30:00"))
+        PriceResponseBody priceResponseBody = PriceResponseBody.builder().productId(PRODUCT_ID).brandId(BRAND_ID)
+            .price(BigDecimal.valueOf(PRICE_VALUE)).finalPrice(BigDecimal.valueOf(PRICE_VALUE))
+            .startDate(new SimpleDateFormat(DATE_PATTERN).parse(START_DATE))
+            .endDate(new SimpleDateFormat(DATE_PATTERN).parse(END_DATE))
             .build();
 
         mockMvc.perform(get("/price")
                 .contentType(MediaType.APPLICATION_JSON)
-            .param("applyDate", "2020-06-14T16:00:00")
-            .param("brandId", String.valueOf(1L))
-            .param("productId", String.valueOf(35455L))
+            .param("applyDate", APPLICATION_DATE)
+            .param("brandId", String.valueOf(BRAND_ID))
+            .param("productId", String.valueOf(PRODUCT_ID))
             )
             .andDo(print())
             .andExpect(status().isOk())
@@ -75,23 +85,23 @@ public class PriceControllerTI {
             .andExpect(jsonPath("$.price").value(priceResponseBody.getPrice()))
             .andExpect(jsonPath("$.finalPrice").value(priceResponseBody.getFinalPrice()))
             .andExpect(jsonPath("$.startDate").value(
-                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(priceResponseBody.getStartDate())))
+                new SimpleDateFormat(COMPLETE_DATE_PATTERN).format(priceResponseBody.getStartDate())))
             .andExpect(jsonPath("$.endDate").value(
-                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(priceResponseBody.getEndDate())));
+                new SimpleDateFormat(COMPLETE_DATE_PATTERN).format(priceResponseBody.getEndDate())));
     }
 
     @Test
     void priceExceptionTest() throws Exception {
         mockMvc.perform(get("/price")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("applyDate", "2020-06-14T16:00:00")
-                .param("brandId", String.valueOf(1L))
-                .param("productId", String.valueOf(1L))
+                .param("applyDate", APPLICATION_DATE)
+                .param("brandId", String.valueOf(BRAND_ID))
+                .param("productId", String.valueOf(1l))
             )
             .andDo(print())
             .andExpect(status().isNotFound())
             .andExpect(result -> assertTrue(result.getResolvedException() instanceof ProductNotFoundException))
-            .andExpect(result -> assertEquals("Product Not found for the required date-time", result.getResolvedException().getMessage()));
+            .andExpect(result -> assertEquals(ERROR_MESSAGE, result.getResolvedException().getMessage()));
     }
 
 }

@@ -3,7 +3,6 @@ package com.gin.testjava2020.business.service.impl;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -35,11 +34,9 @@ public class PriceServiceImpl implements PriceService {
             throw new ProductNotFoundException("Error during database access", e);
         }
 
-        final PriceEntity price = prices.stream().sorted(Comparator.comparing(PriceEntity::getPriority, Comparator.reverseOrder())).findFirst().orElse(null);
-
-        if(Objects.isNull(price)) {
-            throw new ProductNotFoundException("Product Not found for the required date-time");
-        }
+        final PriceEntity price = prices.stream()
+            .max(Comparator.comparing(PriceEntity::getPriority, Comparator.reverseOrder()))
+            .orElseThrow(() -> new ProductNotFoundException("Product Not found for the required date-time"));
 
         return priceMapper.map(price);
     }
