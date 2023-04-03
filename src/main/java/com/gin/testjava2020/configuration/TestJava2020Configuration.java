@@ -20,17 +20,10 @@ import org.springframework.web.client.RestTemplate;
 public class TestJava2020Configuration {
 
     /**
-     * Gets rest template.
+     * Jackson object mapper customization jackson 2 object mapper builder customizer.
      *
-     *
-     * @return the rest template
+     * @return the jackson 2 object mapper builder customizer
      */
-    @Bean
-    // Required for OpenApi generated sourcecode
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
-
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization() {
         return jacksonObjectMapperBuilder ->

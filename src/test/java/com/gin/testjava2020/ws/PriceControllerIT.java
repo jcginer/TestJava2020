@@ -29,6 +29,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * The type Price controller it.
+ */
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -37,19 +40,51 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class PriceControllerIT {
 
+    /**
+     * The constant APPLICATION_DATE.
+     */
     public static final String APPLICATION_DATE = "2020-06-14T16:00:00";
+    /**
+     * The constant PRICE_VALUE.
+     */
     public static final double PRICE_VALUE = 25.45;
+    /**
+     * The constant PRODUCT_ID.
+     */
     public static final long PRODUCT_ID = 35455L;
+    /**
+     * The constant BRAND_ID.
+     */
     public static final long BRAND_ID = 1L;
+    /**
+     * The constant DATE_PATTERN.
+     */
     public static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+    /**
+     * The constant COMPLETE_DATE_PATTERN.
+     */
     public static final String COMPLETE_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    /**
+     * The constant START_DATE.
+     */
     public static final String START_DATE = "2020-06-14T15:00:00";
+    /**
+     * The constant END_DATE.
+     */
     public static final String END_DATE = "2020-06-14T18:30:00";
+    /**
+     * The constant ERROR_MESSAGE.
+     */
     public static final String ERROR_MESSAGE = "Product Not found for the required date-time";
 
     @Autowired
     private MockMvc mockMvc;
 
+    /**
+     * Postgresql properties.
+     *
+     * @param registry the registry
+     */
     @DynamicPropertySource
     static void postgresqlProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
@@ -57,12 +92,20 @@ class PriceControllerIT {
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
     }
 
+    /**
+     * The constant postgreSQLContainer.
+     */
     @Container
     public static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:11-alpine")
         .withDatabaseName("integration-tests-db")
         .withPassword("inmemory")
         .withUsername("inmemory");
 
+    /**
+     * Price test.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void priceTest() throws Exception {
         PriceResponseBody priceResponseBody = PriceResponseBody.builder().productId(PRODUCT_ID).brandId(BRAND_ID)
@@ -90,6 +133,11 @@ class PriceControllerIT {
                 new SimpleDateFormat(COMPLETE_DATE_PATTERN).format(priceResponseBody.getEndDate())));
     }
 
+    /**
+     * Price exception test.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void priceExceptionTest() throws Exception {
         mockMvc.perform(get("/price")
