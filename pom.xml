@@ -20,7 +20,21 @@
         <springfox.version>2.9.2</springfox.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <lombok.mapstruct.version>0.2.0</lombok.mapstruct.version>
+        <testcontainers.version>1.17.3</testcontainers.version>
+        <postgresql.version>42.2.5</postgresql.version>
+        <validation-api.version>2.0.1.Final</validation-api.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -87,6 +101,12 @@
             <version>${lombok.mapstruct.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
+        </dependency>
+
         <!-- Tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -99,9 +119,25 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -179,12 +215,6 @@
                         <hideGenerationTimestamp>true</hideGenerationTimestamp>
                         <dateLibrary>java11-localdatetime</dateLibrary>
                     </configOptions>
-                    <importMappings>
-                        <importMapping>Date=java.time.LocalDate</importMapping>
-                    </importMappings>
-                    <typeMappings>
-                        <typeMapping>Date=LocalDate</typeMapping>
-                    </typeMappings>
                 </configuration>
             </plugin>
         </plugins>

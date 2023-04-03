@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
@@ -58,8 +59,9 @@ public class PriceEntity {
     @Column(name = "PRODUCT_ID", nullable = false)
     private Long productId;
 
-    @Column(name = "PRIORITY", length = 1, nullable = false, columnDefinition = "integer(1) default 0")
-    private Integer priority;
+    @Column(name = "PRIORITY", length = 1, nullable = false)
+    @ColumnDefault("0")
+    private Integer priority = 0;
 
     @Column(name = "PRICE", nullable = false)
     private Double priceAmount;
