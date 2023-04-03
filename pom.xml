@@ -20,7 +20,21 @@
         <springfox.version>2.9.2</springfox.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <lombok.mapstruct.version>0.2.0</lombok.mapstruct.version>
+        <testcontainers.version>1.17.3</testcontainers.version>
+        <postgresql.version>42.2.5</postgresql.version>
+        <validation-api.version>2.0.1.Final</validation-api.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -87,6 +101,12 @@
             <version>${lombok.mapstruct.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
+        </dependency>
+
         <!-- Tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -96,6 +116,28 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -114,31 +156,93 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>io.swagger.codegen.v3</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>swagger-ui-customization</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>swagger-ui</artifactId>
+                                    <version>3.34.0</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <includes>**/*.*</includes>
+                                    <excludes>**/*.png,**/index.html,**/maven/**,**/MANIFEST.MF,**/*.properties,**/pom.xml</excludes>
+                                    <fileMappers>
+                                        <org.codehaus.plexus.components.io.filemappers.RegExpFileMapper>
+                                            <pattern>^\QMETA-INF/resources/webjars/swagger-ui/3.34.0/\E</pattern>
+                                            <replacement>./</replacement>
+                                        </org.codehaus.plexus.components.io.filemappers.RegExpFileMapper>
+                                    </fileMappers>
+                                    <outputDirectory>target/classes/META-INF/resources/webjars/swagger-ui</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.swagger</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.8</version>
+                <version>2.4.29</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>generate</goal>
                         </goals>
-                        <configuration>
-                            <inputSpec>${basedir}/src/main/resources/openapi/priceApis.yaml</inputSpec>
-                            <language>java</language>
-                            <modelPackage>com.gin.testjava2020.model</modelPackage>
-                            <configOptions>
-                                <groupId>${project.groupId}</groupId>
-                                <artifactId>${project.artifactId}</artifactId>
-                                <artifactVersion>${project.version}</artifactVersion>
-                                <library>resttemplate</library>
-                                <java11>true</java11>
-                                <dateLibrary>java11</dateLibrary>
-                                <licenseName>Apache 2.0</licenseName>
-                                <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-                            </configOptions>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <inputSpec>${basedir}/src/main/resources/swagger/priceApis.yml</inputSpec>
+                    <language>spring</language>
+                    <library>spring-boot</library>
+                    <modelPackage>com.gin.testjava2020.model</modelPackage>
+                    <generateApis>false</generateApis>
+                    <generateApiTests>false</generateApiTests>
+                    <generateApiDocumentation>false</generateApiDocumentation>
+                    <generateModelTests>false</generateModelTests>
+                    <generateSupportingFiles>false</generateSupportingFiles>
+                    <configOptions>
+                        <additionalModelTypeAnnotations>@lombok.Builder @lombok.NoArgsConstructor @lombok.AllArgsConstructor</additionalModelTypeAnnotations>
+                        <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                        <dateLibrary>java11-localdatetime</dateLibrary>
+                    </configOptions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>com/gin/testjava2020/persistence/*Entity*.*</exclude>
+                        <exclude>com/gin/testjava2020/*Application.*</exclude>
+                        <exclude>com/gin/testjava2020/model/*</exclude>
+                        <exclude>com/gin/testjava2020/business/mapper/*</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

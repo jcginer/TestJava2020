@@ -1,0 +1,82 @@
+swagger: "2.0"
+info:
+  title: priceApis
+  version: "2.4"
+
+host: http://localhost:8080
+schemes:
+  - https
+
+produces:
+  - application/json
+
+paths:
+  /users/{userId}:
+    get:
+      summary: Gets a user by ID.
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+          description: Numeric ID of the user to get.
+  /price/{applyDate}&{productId}&{brandId}:
+    get:
+      summary: Gets the price of a product on the apply date.
+      description: Returns the price of a provided product (+ brandId) that has to be applied on the provided apply date
+      parameters:
+        - in: path
+          name: applyDate
+          type: string
+          format: date-time
+          required: true
+          description: Apply date
+        - in: path
+          name: productId
+          type: integer
+          required: true
+          description: Product identifier
+        - in: path
+          name: brandId
+          type: integer
+          required: true
+          description: Brand identifier
+      responses:
+        '200':
+          $ref: ''#/responses/PriceResponseBody''
+        '404':
+          description: Product Not found
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+responses:
+  PriceResponseBody:
+    schema:
+      $ref: "#/definitions/PriceResponseBody"
+
+definitions:
+  PriceResponseBody:
+    description: 'Price detail'
+    type: object
+    properties:
+      productId:
+        type: integer
+        format: int64
+      brandId:
+        type: integer
+        format: int64
+      price:
+        type: number
+      startDate:
+        type: string
+        format: date-time
+        description: Creation date and time
+        example: "2021-01-30T08:30:00Z"
+      endDate:
+        type: string
+        format: date-time
+        description: Creation date and time
+        example: "2021-01-30T08:30:00Z"
+      finalPrice:
+        type: number

@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: testJava2020-example
+  data:
+    jpa:
+      repositories:
+        enabled: true
+        bootstrap-mode: default
+    defer-defer-datasource-initialization: true
+  datasource:
+    url: jdbc:tc:postgresql:11.1:///integration-tests-db
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    hibernate:
+      ddl-auto: create-drop
+      use-new-id-generator-mappings: true
+      generate-ddl: true
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc.batch_size: 10
+        order_updates: true
+        batch_versioned_data: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+      platform: postgres
